@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Система голосования</title>
+    <style>
+      button {
+        margin: 5px;
+        padding: 10px;
+      }
+      .stats {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Система голосования</h1>
+    <div id="options"></div>
+    <div class="stats">
+      <h2>Текущая статистика:</h2>
+      <div id="statistics"></div>
+    </div>
+
+    <script>
+      function loadOptions() {
+        fetch("/variants")
+          .then((response) => response.json())
+          .then((data) => {
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            data.forEach((option) => {
+              const btn = document.createElement("button");
+              btn.textContent = option.text;
+              btn.addEventListener("click", () => vote(option.code));
+              optionsDiv.appendChild(btn);
+            });
+          });
+      }
+
+      function vote(code) {
+        fetch("/vote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              loadStatistics();
+            } else {
+              alert(data.message);
+            }
+          });
+      }
+
+      function loadStatistics() {
+        fetch("/stat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const statsDiv = document.getElementById("statistics");
+            statsDiv.innerHTML = "";
+            data.forEach((stat) => {
+              const statItem = document.createElement("div");
+              statItem.textContent = `Вариант ${stat.code}: ${stat.votes} голосов`;
+              statsDiv.appendChild(statItem);
+            });
+          });
+      }
+      loadOptions();
+      loadStatistics();
+    </script>
+  </body>
+</html>
