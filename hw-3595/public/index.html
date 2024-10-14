@@ -24,6 +24,17 @@
       <button data-header='{"Accept": "text/html"}'>Получить HTML</button>
       <button data-header='{"Accept": "application/xml"}'>Получить XML</button>
     </div>
+    <div id="download">
+      <button data-header-download='{"Accept": "application/json"}'>
+        Скачать JSON
+      </button>
+      <button data-header-download='{"Accept": "text/html"}'>
+        Скачать HTML
+      </button>
+      <button data-header-download='{"Accept": "application/xml"}'>
+        Скачать XML
+      </button>
+    </div>
     <div class="stats">
       <h2>Текущая статистика:</h2>
       <div id="statistics"></div>
@@ -100,9 +111,9 @@
           });
       }
 
-      const buttons = document.querySelectorAll("button[data-header]");
+      const buttonsStat = document.querySelectorAll("button[data-header]");
 
-      buttons.forEach((button) => {
+      buttonsStat.forEach((button) => {
         const header = JSON.parse(button.getAttribute("data-header"));
         button.addEventListener("click", () => {
           loadStatistics(header);
@@ -110,6 +121,50 @@
       });
       loadOptions();
       loadStatistics();
+
+      const buttonsDownload = document.querySelectorAll(
+        "button[data-header-download]"
+      );
+
+      function downloadFile(content, fileName, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+
+      buttonsDownload.forEach((button) => {
+        const headers = JSON.parse(button.getAttribute("data-header-download"));
+        button.addEventListener("click", () => {
+          fetch("/stat", {
+            method: "POST",
+            headers,
+          }).then((response) => {
+            const contentType = response.headers.get("Content-Type");
+            if (contentType.includes("application/json")) {
+              return response.json().then((data) => {
+                downloadFile(
+                  JSON.stringify(data),
+                  "data.json",
+                  "application/json"
+                );
+              });
+            } else if (contentType.includes("application/xml")) {
+              return response.text().then((data) => {
+                downloadFile(data, "data.xml", "application/xml");
+              });
+            } else if (contentType.includes("text/html")) {
+              return response.text().then((data) => {
+                downloadFile(data, "data.html", "text/html");
+              });
+            } else {
+              throw new Error("Unknown content type");
+            }
+          });
+        });
+      });
     </script>
   </body>
 </html>
