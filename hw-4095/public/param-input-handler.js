@@ -21,10 +21,14 @@ class DynamicInputHandler {
 
     inputKey.addEventListener("input", () => {
       this.dataManager.updateEntry(rowId, inputKey.value, inputValue.value);
+      inputKey.setAttribute("value", inputKey.value);
+      inputKey.setAttribute("placeholder", inputKey.value);
     });
 
     inputValue.addEventListener("input", () => {
       this.dataManager.updateEntry(rowId, inputKey.value, inputValue.value);
+      inputValue.setAttribute("value", inputValue.value);
+      inputValue.setAttribute("placeholder", inputValue.value);
     });
 
     deleteButton.addEventListener("click", () => {

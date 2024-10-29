@@ -11,66 +11,71 @@
       crossorigin="anonymous"
     />
   </head>
-  <body>
-    <form id="form" class="p-5">
-      <!-- Method -->
-      <div class="input-group mb-3">
-        <span class="input-group-text">Method</span>
-        <select class="form-select" name="method" id="methodSelect">
-          <option value="GET" selected>GET</option>
-          <option value="POST">POST</option>
-          <option value="DELETE">DELETE</option>
-          <option value="UPDATE">UPDATE</option>
-        </select>
-      </div>
-      <!-- Method -->
-      <!-- URL -->
-      <div class="input-group mb-3">
-        <span class="input-group-text">URL</span>
-        <input
-          name="url"
-          type="url"
-          class="form-control"
-          id="urlInput"
-          placeholder="Enter URL"
-        />
-      </div>
-      <!-- URL -->
-      <div class="input-group mb-3">
-        <span class="input-group-text">Body</span>
-        <textarea
-          name="Body"
-          class="form-control"
-          id="bodyInput"
-          placeholder="Enter Body"
-        ></textarea>
-      </div>
-      <!-- URL -->
-      <!-- PARAMS -->
-      <div id="paramsContainer">
-        <button id="addParamsBtn" class="btn btn-success mb-2" type="button">
-          Add params
+  <body id="body">
+    <div id="responseBtns"></div>
+    <div id="formContainer">
+      <form id="form" class="p-5">
+        <!-- Method -->
+        <div class="input-group mb-3">
+          <span class="input-group-text">Method</span>
+          <select class="form-select" name="method" id="methodSelect">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="DELETE">DELETE</option>
+            <option value="UPDATE">UPDATE</option>
+          </select>
+        </div>
+        <!-- Method -->
+        <!-- URL -->
+        <div class="input-group mb-3">
+          <span class="input-group-text">URL</span>
+          <input
+            name="url"
+            type="url"
+            class="form-control"
+            id="urlInput"
+            placeholder="Enter URL"
+          />
+        </div>
+        <!-- URL -->
+        <div class="input-group mb-3">
+          <span class="input-group-text">Body</span>
+          <textarea
+            name="Body"
+            class="form-control"
+            id="bodyInput"
+            placeholder="Enter Body"
+          ></textarea>
+        </div>
+        <!-- URL -->
+        <!-- PARAMS -->
+        <div id="paramsContainer">
+          <button id="addParamsBtn" class="btn btn-success mb-2" type="button">
+            Add params
+          </button>
+        </div>
+        <!-- PARAMS -->
+        <!-- Response Container -->
+        <div id="responseContainer"></div>
+        <!-- Response Container -->
+        <!-- HEADER -->
+        <div id="headerContainer">
+          <button id="addHeaderBtn" class="btn btn-success mb-2" type="button">
+            Add header
+          </button>
+        </div>
+        <!-- HEADER -->
+        <button id="saveResponseBtn" class="btn btn-success" type="button">
+          Сохранить запрос
         </button>
-      </div>
-      <!-- PARAMS -->
-      <!-- Response Container -->
-      <div id="responseContainer"></div>
-      <!-- Response Container -->
-      <!-- HEADER -->
-      <div id="headerContainer">
-        <button id="addHeaderBtn" class="btn btn-success mb-2" type="button">
-          Add header
+        <button id="submitFormBtn" class="btn btn-success" type="button">
+          Отправить запрос
         </button>
-      </div>
-      <!-- HEADER -->
-      <button class="btn btn-success" type="button">Сохранить запрос</button>
-      <button id="submitFormBtn" class="btn btn-success" type="button">
-        Отправить запрос
-      </button>
-      <button id="resetFormBtn" class="btn btn-success" type="button">
-        Очистить форму
-      </button>
-    </form>
+        <button id="resetFormBtn" class="btn btn-success" type="button">
+          Очистить форму
+        </button>
+      </form>
+    </div>
     <!-- TEMPLATE -->
     <template id="templateRow">
       <div class="input-group mb-3">
@@ -86,6 +91,11 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="./create-button-from-local-storage.js"></script>
+    <script src="./save-html-to-local-storage.js"></script>
+    <script src="./render-response.js"></script>
+    <script src="./get-response.js"></script>
+    <script src="./encode-data.js"></script>
     <script src="./manager.js"></script>
     <script src="./method-manager.js"></script>
     <script src="./url-manager.js"></script>
