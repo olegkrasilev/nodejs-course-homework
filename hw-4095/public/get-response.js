@@ -13,7 +13,20 @@ async function getResponse(url, params, headers, method, body) {
         body,
       }),
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
+    const contentType = data.headers["content-type"];
+    if (contentType && contentType.startsWith("image/")) {
+      data.body = `<img src="${url?.url}"/>`;
+      return data;
+    }
+
     return data;
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error fetching response:", error);
+  }
 }
