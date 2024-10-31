@@ -1,12 +1,10 @@
 function renderResponse({ body, code, headers }) {
   let formattedBody;
   if (typeof body === "string" && body.trim().startsWith("<")) {
-    formattedBody = `
-      <iframe srcdoc="${body.replace(
-        /"/g,
-        "&quot;"
-      )}" style="width: 100%; height: 500px; border: none;"></iframe>
-    `;
+    formattedBody = `<pre>${body
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")}</pre>`;
   } else if (typeof body === "object") {
     formattedBody = `<pre><code>${JSON.stringify(body, null, 2)}</code></pre>`;
   } else {
