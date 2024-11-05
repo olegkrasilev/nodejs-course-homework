@@ -14,7 +14,7 @@ async function getResponse(url, params, headers, method, body) {
       }),
     });
 
-    if (!response.ok) {
+    if (!response.ok && (response.status < 300 || response.status > 399)) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
