@@ -4,6 +4,7 @@ const { createReadStream, createWriteStream } = require("node:fs");
 const { promisify } = require("node:util");
 const { getFileModificationTime } = require("./getFileModificationTime");
 const { removeFile } = require("./remove-file");
+const fs = require("fs/promises");
 const pipe = promisify(pipeline);
 
 async function gzip(input, files) {
@@ -28,8 +29,10 @@ async function gzip(input, files) {
       console.log("Файл протух, пересоздаем архив");
       console.log("Удаляем старый архив");
       await removeFile(input);
-      const destination = createWriteStream(`${originalName}.gz`);
+      const destination = createWriteStream(`${originalName}.tmp.gz`);
       await pipe(source, gzip, destination);
+      const newName = `${originalName}.gz`;
+      await fs.rename(`${originalName}.tmp.gz`, newName);
       console.log("Создаем новый архив для файла " + input);
       return;
     }

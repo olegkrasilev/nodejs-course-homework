@@ -1,11 +1,13 @@
-const fs = require("fs");
+const fs = require("fs/promises");
+
 async function removeFile(input) {
-  fs.unlink(input, (err) => {
-    if (err) {
-      console.error(`Error removing file: ${err}`);
-      return;
-    }
-  });
+  try {
+    await fs.unlink(input);
+    console.log(`Файл ${input} успешно удалён.`);
+  } catch (err) {
+    console.error(`Ошибка удаления файла ${input}: ${err.message}`);
+    throw err;
+  }
 }
 
 module.exports = { removeFile };
