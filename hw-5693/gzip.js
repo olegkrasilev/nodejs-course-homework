@@ -9,12 +9,13 @@ const pipe = promisify(pipeline);
 async function gzip(input, files) {
   const gzip = createGzip();
   const source = createReadStream(input);
-  const isGzip = input.includes(".gz");
+  const extensionLength = ".gz".length;
+  const isGzip = input.slice(0, extensionLength).includes(".gz");
   console.log("Обрабатываю файл " + input);
 
   if (isGzip) {
     const gzipModificationTime = await getFileModificationTime(input);
-    const originalName = input.slice(0, -3);
+    const originalName = input.slice(0, extensionLength);
     const fileModificationTime = await getFileModificationTime(originalName);
 
     if (gzipModificationTime > fileModificationTime) {
